@@ -42,25 +42,25 @@ public class Consumer {
         //匿名内部类实现方式
 //        DeliverCallback deliverCallback = new DeliverCallback() {
 //            @Override
-//            public void handle(String s, Delivery delivery) throws IOException {
-//                System.out.println(delivery);
+//            public void handle(consumerTag, message) throws IOException {
+//                System.out.println(message);
 //            }
 //        };
         //lambda表达式
-        DeliverCallback deliverCallback = (s, delivery) -> {
-            System.out.println(new String(delivery.getBody()));
+        DeliverCallback deliverCallback = (consumerTag, message) -> {
+            System.out.println(new String(message.getBody()));
         };
 
         //未成功消费
         //匿名内部类
 //        CancelCallback cancelCallback = new CancelCallback() {
 //            @Override
-//            public void handle(String s) throws IOException {
-//                System.out.println(s);
+//            public void handle(String consumerTag ) throws IOException {
+//                System.out.println(consumerTag );
 //            }
 //        };
         //lambda表达式 当只有一个参数的时候可以取消小括号
-        CancelCallback cancelCallback = s -> {
+        CancelCallback cancelCallback =consumerTag   -> {
             System.out.println("消息消费被中断");
         };
 
