@@ -18,6 +18,9 @@ public class Task02 {
     public static void main(String[] args) throws Exception {
         Channel channel = RabbitMQUtils.getChannel();
 
+        //开启发布确认，只要有信道之后就可以
+        channel.confirmSelect();
+
         //持久化
         boolean durable = true;
         channel.queueDeclare(TASK_QUEUE_NAME,durable,false,false,null);

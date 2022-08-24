@@ -7,19 +7,6 @@
     <groupId>com.atguigu.rabbitmq</groupId>
     <artifactId>rabbitmq_helloworld</artifactId>
     <version>1.0-SNAPSHOT</version>
-<!--    &lt;!&ndash;指定jdk编译版本&ndash;&gt;-->
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <source>8</source>-->
-<!--                    <target>8</target>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
     <dependencies>
         <!--rabbitmq依赖客户端-->
         <dependency>
