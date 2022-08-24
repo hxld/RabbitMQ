@@ -16,8 +16,8 @@ import com.rabbitmq.client.ConnectionFactory;
  */
 public class RabbitMQUtils {
     //URL
-//    public static final String URL_NAME = "192.168.76.100";
-    public static final String URL_NAME = "192.168.119.100";
+    public static final String URL_NAME = "192.168.76.100";
+//    public static final String URL_NAME = "192.168.119.100";
     //用户名
     public static final String USER_NAME = "admin";
     //密码
