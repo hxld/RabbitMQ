@@ -49,7 +49,7 @@ public class ConfirmMessage {
             String message = i + " ";
             channel.basicPublish("",queueName,null,message.getBytes(StandardCharsets.UTF_8));
 
-            //单个消息就马上进行发布确认
+            //单个消息确认
             boolean flag = channel.waitForConfirms();
             if(flag){
                 System.out.println("消息发送成功");
