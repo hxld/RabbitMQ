@@ -36,7 +36,7 @@ public class ConfirmMessage {
         ConfirmMessage.batch();
 
         //异步确认
-        ConfirmMessage.async();
+//        ConfirmMessage.async();
 
     }
 
@@ -76,7 +76,7 @@ public class ConfirmMessage {
         //开启发布确认
         channel.confirmSelect();
         String queueName = UUID.randomUUID().toString();
-        channel.queueDeclare(queueName,true,false,false,null);
+        channel.queueDeclare(queueName,false,false,false,null);
 
         //开始时间
         long begin = System.currentTimeMillis();
