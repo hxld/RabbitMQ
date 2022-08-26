@@ -39,7 +39,7 @@ public class Consumer01 {
         //设置死信RountingKEY  死信交换机与死信队列进行关联
         arguments.put("x-dead-letter-routing-key","lisi");
         //设置正常队列的长度的限制
-        arguments.put("x-max-length",6);
+//        arguments.put("x-max-length",6);
         channel.queueDeclare(NORMAL_QUEUE,false,false,false,arguments );
 
 

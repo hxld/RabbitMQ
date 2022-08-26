@@ -82,7 +82,8 @@ public class ConfirmMessage {
         long begin = System.currentTimeMillis();
 
         //批量确认消息大小
-        int batchSize = 1000;
+        int batchSize = 100;
+
 
         //批量发消息 批量发布确认
         for (int i = 0; i < MESSAGE_COUNT; i++) {
