@@ -1,6 +1,7 @@
 package com.atguigu.rabbitmq.springbootrabbitmq.config;
 
 
+import com.sun.tracing.dtrace.ArgsAttributes;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -24,19 +25,22 @@ public class TtlQueueConfig {
     //普通队列
     public static final String QUEUE_A = "QA";
     public static final String QUEUE_B = "QB";
+    public static final String QUEUE_C = "QC";
     //死信队列
     public static final String QUEUE_DEAD_D = "QD";
 
 
-    //使用注解方式声明交换机与队列
+    //使用注解方式声明交换机
     @Bean("xExchange")
     public DirectExchange xExchange(){
+
         return  new DirectExchange(X_EXCHANGE);
     }
 
 
     @Bean("yExchange")
     public DirectExchange yExchange(){
+
         return  new DirectExchange(Y_DEAD_EXCHANGE);
     }
 
@@ -92,6 +96,25 @@ public class TtlQueueConfig {
         return BindingBuilder.bind(queueD).to(yExchange).with("YD");
     };
 
+
+    //优化延迟信息队列
+    @Bean("queueC")
+    public Queue queueC(){
+        Map<String, Object> args = new HashMap<>();
+        //设置与死信交换机绑定
+        args.put("x-dead-letter-exchange",Y_DEAD_EXCHANGE);
+        //声明当前队列的死信路由KEY
+        args.put("x-dead-letter-routing-key","YD");
+        return  QueueBuilder.durable(QUEUE_C).withArguments(args).build();
+    }
+
+    //绑定
+    @Bean
+    public Binding queudeadeBindingC(@Qualifier("queueC") Queue queueC,
+                                     @Qualifier("xExchange") DirectExchange xExchange
+                                     ){
+        return  BindingBuilder.bind(queueC).to(xExchange).with("XC");
+    }
 
 
 }

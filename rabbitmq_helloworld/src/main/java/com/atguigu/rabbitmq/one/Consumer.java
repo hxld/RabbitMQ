@@ -13,7 +13,7 @@ public class Consumer {
     public static final String QUEUE_NAME = "hello";
 
     //URL
-    public static final  String URL_NAME = "192.168.76.100";
+    public static final  String URL_NAME = "192.168.119.100";
 
     //用户名
     public static final  String USER_NAME = "admin";
@@ -26,6 +26,7 @@ public class Consumer {
         factory.setHost(URL_NAME);
         factory.setUsername(USER_NAME);
         factory.setPassword(PASSWORD);
+        factory.setHandshakeTimeout(60000);
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();

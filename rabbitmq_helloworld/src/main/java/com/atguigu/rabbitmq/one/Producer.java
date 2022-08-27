@@ -1,10 +1,13 @@
 package com.atguigu.rabbitmq.one;
 
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -16,7 +19,7 @@ public class Producer {
     public static final String QUEUE_NAME = "hello";
 
     //URL
-    public static final  String URL_NAME = "192.168.76.100";
+    public static final  String URL_NAME = "192.168.119.100";
 
     //用户名
     public static final  String USER_NAME = "admin";
@@ -33,6 +36,8 @@ public class Producer {
         factory.setUsername(USER_NAME);
         //密码
         factory.setPassword(PASSWORD);
+        //测试消息优先级的时候启动报错，原因是连接超时，百度查了下是要设置超时时间。
+        factory.setHandshakeTimeout(60000);
 
         //创建连接
         Connection connection = factory.newConnection();
@@ -48,10 +53,24 @@ public class Producer {
          * 4.是否自动删除 当最后一个消费者断开连接后，该队列是否自动删除，true:自动删除
          * 5.其他参数
          */
-        channel.queueDeclare(QUEUE_NAME,false,false,false,null);
 
-        //发消息
-        String message = "hello world";
+        //声明队列的时候设置优先级
+        Map<String,Object> arguments = new HashMap<>();
+        arguments.put("x-max-priority",10);  //设置消息的优先级，0-225区间，实际开发中取到10就行，否则浪费资源。
+        channel.queueDeclare(QUEUE_NAME,false,false,false,arguments);
+
+        //发消息 的时候设置某条消息的优先级
+//        String message = "hello world";
+        for (int i = 1; i < 11 ; i++) {
+            String message = "info"+i;
+            if(i == 5){
+                AMQP.BasicProperties properties =
+                        new AMQP.BasicProperties().builder().priority(5).build();
+                channel.basicPublish("",QUEUE_NAME,properties,message.getBytes());
+            }else{
+                channel.basicPublish("",QUEUE_NAME,null,message.getBytes());
+            }
+        }
 
 
         /**
@@ -61,7 +80,7 @@ public class Producer {
          * 3.其他参数信息
          * 4.发送消息的消息体
          */
-        channel.basicPublish("",QUEUE_NAME,null,message.getBytes());
+//        channel.basicPublish("",QUEUE_NAME,null,message.getBytes());
         System.out.println("消息发送完毕");
 
     }
