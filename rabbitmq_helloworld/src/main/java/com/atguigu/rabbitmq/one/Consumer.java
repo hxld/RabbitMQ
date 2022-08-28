@@ -10,10 +10,10 @@ import com.rabbitmq.client.*;
  */
 public class Consumer {
     //队列名称
-    public static final String QUEUE_NAME = "hello";
+    public static final String QUEUE_NAME = "mirrior_hello";
 
     //URL
-    public static final  String URL_NAME = "192.168.119.100";
+    public static final  String URL_NAME = "192.168.119.130";
 
     //用户名
     public static final  String USER_NAME = "admin";

@@ -1,9 +1,6 @@
 package com.atguigu.rabbitmq.one;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,16 +13,18 @@ import java.util.concurrent.TimeoutException;
  */
 public class Producer {
     //队列名称
-    public static final String QUEUE_NAME = "hello";
+    public static final String QUEUE_NAME = "node2_hello";
 
     //URL
-    public static final  String URL_NAME = "192.168.119.100";
+    public static final  String URL_NAME = "192.168.119.130";
 
     //用户名
     public static final  String USER_NAME = "admin";
 
     //密码
     public static final String PASSWORD = "123";
+
+    public static final String FED_EXCHANGE_NAME = "fed_exchange";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         //创建工厂
@@ -44,6 +43,7 @@ public class Producer {
 
         //获取信道
         Channel channel = connection.createChannel();
+        channel.exchangeDeclare(FED_EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
         /**
          * 生成一个队列
          * 参数有五个
@@ -58,7 +58,7 @@ public class Producer {
         Map<String,Object> arguments = new HashMap<>();
         arguments.put("x-max-priority",10);  //设置消息的优先级，0-225区间，实际开发中取到10就行，否则浪费资源。
         channel.queueDeclare(QUEUE_NAME,false,false,false,arguments);
-
+        channel.queueBind(QUEUE_NAME,FED_EXCHANGE_NAME,"royteKey");
         //发消息 的时候设置某条消息的优先级
 //        String message = "hello world";
         for (int i = 1; i < 11 ; i++) {
@@ -84,5 +84,5 @@ public class Producer {
         System.out.println("消息发送完毕");
 
     }
+    }
 
-}
